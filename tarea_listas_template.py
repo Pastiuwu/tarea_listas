@@ -27,10 +27,14 @@ def generos_mejor_calificados(lista):
         for genero in generos:
             todos_generos.append((genero, calificacion))
     
-    # lista generos unicos
+    # listar generos unicos
     generos_unicos = []
     for genero, _ in todos_generos:
-        if genero not in generos_unicos:
+        encontrado = False
+        for g in generos_unicos:
+            if g == genero:
+                encontrado = True
+        if not encontrado:
             generos_unicos.append(genero)
     
     # calcular promedio
@@ -47,7 +51,7 @@ def generos_mejor_calificados(lista):
     
     # ordenar
     def obtener_orden(item):
-        return (-item[1], item[0])  # descen
+        return (-item[1], item[0])  
     
     promedios.sort(key=obtener_orden)
     
@@ -73,28 +77,28 @@ def recomendar_series(lista, año, lista_generos):
         evaluaciones = serie[4]
         generos = serie[5]
         
-        # verificar si ta en emision 
+        # verif si esta en emision 
         if fin == "NA":
             en_emision = (año >= inicio)
         else:
             en_emision = (inicio <= año <= fin)
         
-        # verificar generos
         if not lista_generos:
             genero_valido = True
         else:
             genero_valido = False
-            for genero in generos:
-                if genero in lista_generos:
+            i = 0
+            while i < len(generos) and not genero_valido:
+                if generos[i] in lista_generos:
                     genero_valido = True
-                    break
+                i += 1
         
         if en_emision and genero_valido:
             series_filtradas.append([nombre, generos, calificacion, evaluaciones])
     
     # ordenar series
     def obtener_orden(serie):
-        return (-serie[2], -serie[3])  
+        return (-serie[2], -serie[3])  # desc
     
     series_filtradas.sort(key=obtener_orden)
 
